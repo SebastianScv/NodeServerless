@@ -1,0 +1,45 @@
+version: '3.3'
+
+networks:
+  nodetest:
+    driver: bridge
+
+services:
+  localstack:
+    container_name: nodetest_localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    networks:
+      - nodetest
+    environment:
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
+  database:
+    container_name: nodetest_postgresql
+    image: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - nodetest
+    environment:
+      POSTGRES_PASSWORD: nodetest
+      POSTGRES_USER: nodetest
+      POSTGRES_DB: nodetest
+
+  web:
+    build: .
+    container_name: nodetest_web
+    ports:
+      - "3000:3000"
+    networks:
+      - nodetest
+    environment:
+      DB_USER: nodetest
+      DB_PASSWORD: nodetest
+      DB_HOST: database
+      DB_NAME: nodetest
+      DEBUG: "nodetest:*"

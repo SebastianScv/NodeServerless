@@ -1,0 +1,40 @@
+service: node-task
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  vpc:
+    securityGroupIds:
+      - sg-0115992c
+    subnetIds:
+      - subnet-4d182973
+      - subnet-00e84f0e
+  region: us-east-1
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-localstack
+
+functions:
+  hello:
+    handler: src/handler.hello
+    events:
+      - http:
+          path: hello
+          method: get
+  report:
+    handler: src/handler.report
+    events:
+      - http:
+          path: report/{id}
+          method: get
+
+custom:
+  localstack:
+    stages:
+      - dev
+    host: http://localhost
+    edgePort: 4566  
+    autostart: true
+    docker: 
+      sudo: false

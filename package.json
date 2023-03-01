@@ -1,0 +1,19 @@
+{
+    "name": "polcode-node-assignment",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/handler.js",
+    "dependencies": {
+        "localstack": "1.0.0",
+        "pg": "^8.3.0"
+    },
+    "devDependencies": {
+        "dotenv": "^16.0.1",
+        "jest": "^28.1.0",
+        "serverless-dotenv-plugin": "^4.0.1",
+        "serverless-localstack": "^0.4.36"
+    },
+    "scripts": {
+        "test": "jest"
+    }
+}
